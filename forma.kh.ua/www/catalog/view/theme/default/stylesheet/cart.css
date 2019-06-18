@@ -1,0 +1,150 @@
+#container #cartfly {
+    clear: both;
+    display: none;
+    position: fixed;
+    padding: 8px;
+    min-height: 110px;
+    min-width: 350px;
+    left: 50%;
+    top: 50%;
+    margin-left: -305px;
+    margin-top: -250px;
+    background: #FFFFFF;
+    border-top: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    -webkit-border-radius: 7px 7px 7px 7px;
+    -moz-border-radius: 7px 7px 7px 7px;
+    -khtml-border-radius: 7px 7px 7px 7px;
+    border-radius: 7px 7px 7px 7px;
+    -webkit-box-shadow: 0px 0px 20px 1px #CECECE;
+    -moz-box-shadow: 0px 0px 20px 1px #CECECE;
+    box-shadow: 0px 0px 20px 1px #CECECE;
+    z-index: 1333;
+    width: 600px;
+    max-height: 70%;
+}
+
+#container #cartfly.active {
+    display: block;
+    z-index: 1334;
+    overflow: auto;
+}
+
+input.product_quantity {
+    width: 22px;
+    float: left;
+}
+
+#container #cartfly table {
+    width: 100%;
+    margin-bottom: 0px;
+    border-collapse: collapse;
+    border-top: 1px solid #DDDDDD;
+}
+#container #cartfly td {
+    padding: 7px 5px;
+    min-width: 52px;
+}
+#container #cartfly thead td {
+    color: #4D4D4D;
+    font-weight: bold;
+    background-color: #F7F7F7;
+    border-bottom: 1px solid #DDDDDD;
+}
+#container #cartfly thead .remove, #container #cartfly thead .image {
+    text-align: center;
+}
+#container #cartfly thead .name, #container #cartfly thead .model {
+    text-align: left;
+}
+#container #cartfly thead .quantity, #container #cartfly thead .price, #container #cartfly thead .total {
+    text-align: right;
+}
+#container #cartfly tbody td {
+    vertical-align: middle;
+    border-bottom: 1px solid #DDDDDD;
+}
+#container #cartfly tbody .remove {
+    vertical-align: middle;
+}
+#container #cartfly tbody .remove, #container #cartfly tbody .image {
+    text-align: center;
+}
+#container #cartfly tbody .name, #container #cartfly tbody .model {
+    text-align: left;
+    color: #777;
+    font-size: 14px;
+    min-width: 90px;
+}
+#container #cartfly tbody .quantity, #container #cartfly tbody .price, #container #cartfly tbody .total {
+    text-align: right;
+}
+#container #cartfly tbody span.stock {
+    color: #F00;
+    font-weight: bold;
+}
+
+#container #cartfly td {
+    vertical-align: middle;
+}
+
+#container #cartfly #total {
+    border: none;
+    margin-bottom: 0px;
+}
+#container #cartfly #total tbody td {
+    border: none;
+}
+#cartfly .headingrightp a {
+    float: right;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0px 0px 7px 20px;
+    text-align: right;
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: none;
+    color: #4D4D4D;
+    background: url("../image/remove.png") no-repeat scroll left 1px transparent;
+    font-size: 16px;
+    line-height: 16px;
+}
+#cart .headingrightp {
+    display: none;
+}
+
+
+.mini-cart-total .ttl {
+    width: 700px;
+    font-size: 13px;
+}
+.mini-cart-total .vl {
+    width: 100px;
+    font-size: 13px;
+}
+
+#container #cartfly .mini-cart-total table {
+    border:none;
+    font-size: 13px;
+}
+
+#container #cartfly .headingright {
+    display:none;
+}
+
+.headingrightp .buttons {
+    border: none;
+    margin-bottom: 0px;
+}
+
+.button_update, .button_delete {
+    cursor: pointer;
+}
+
+
+.empty {
+    text-align: center;
+    font: 400 14px/22px "Tahoma", "Verdana", "Arial", sans-serif;
+}

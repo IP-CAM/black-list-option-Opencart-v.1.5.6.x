@@ -1,0 +1,49 @@
+<div class="formalog-overlay"></div>
+
+<div class="formalog">
+<form action="http://forma.kh.ua/index.php?route=account/simpleregister" method="post" enctype="multipart/form-data" id="simpleregister">
+	<div class="samookno">
+		<div class="close_header_popup">X</div>
+
+		<div class="header_popup">
+			<h1 class="zagolovok_popup">Еще одну минутку, пожалуйста!</h1>
+			<img src="https://d.radikal.ru/d01/1803/45/7b29a5c75f5d.png">
+
+			<p>Зарегистрировавшись сейчас, <br>
+			Вы получите персональный доступ <br>
+			в секретный раздел сайта<br>
+			с товарами по супернизким ценам!</p>
+		</div>
+		<div class="simpleregister">
+			<div class="simpleregister-block-content">
+				<div class="footer_popup">
+					<input class="input1" type="email" class="simplecheckout-red-border" id="registration_main_email" placeholder="Введите Ваш email" name="registration[main_email]" value="" required>
+					<input type="hidden" name="password" value="fkhy7">
+					<input class="input2" type="text" class="simplecheckout-red-border" id="registration_main_firstname" name="registration[main_firstname]" placeholder="Введите Ваше имя" value="" required>
+					
+					<input type="hidden" id="registration_main_lastname" name="registration[main_lastname]" value="">
+					<input type="hidden" id="registration_main_telephone" name="registration[main_telephone]" value="">
+					<input type="hidden" id="registration_main_fax" name="registration[main_fax]" value="">
+					<input type="hidden" id="registration_main_company" name="registration[main_company]" value="">
+					<input type="hidden" id="registration_main_company_id" name="registration[main_company_id]" value="">
+					<input type="hidden" id="registration_main_tax_id" name="registration[main_tax_id]" value="">
+					<input type="hidden" id="registration_main_address_1" name="registration[main_address_1]" value="">
+					<input type="hidden" id="registration_main_address_2" name="registration[main_address_2]" value="">
+					<input type="hidden" id="registration_main_postcode" name="registration[main_postcode]" value="">
+					<input type="hidden" id="registration_main_country_id" name="registration[main_country_id]" value="220">
+					<input type="hidden" id="registration_main_zone_id" name="registration[main_zone_id]" value="">
+					<input type="hidden" id="registration_main_city" name="registration[main_city]" value="">
+					<input type="hidden" name="simple_create_account" id="simple_create_account" value="">
+					
+					<div class="simpleregister-button-block">
+						<div class="simpleregister-button-right">
+							<a onclick="$('#simple_create_account').val(1);$('#simpleregister').submit();"><div class="registr"><p>Зарегистрироваться</p></div></a>
+						</div>
+						<div class="close_footer_popup"><p>Закрыть</p></div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</form>
+</div>

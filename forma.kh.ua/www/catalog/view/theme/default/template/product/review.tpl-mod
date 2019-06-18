@@ -1,0 +1,20 @@
+<?php if ($reviews) { ?>
+<?php foreach ($reviews as $review) { ?>
+<div class="review-list">
+  <div class="author"><b><?php echo $review['author']; ?></b> <?php echo $text_on; ?> <?php echo $review['date_added']; ?></div>
+  <div class="rating"><img src="catalog/view/theme/default/image/stars-<?php echo $review['rating'] . '.png'; ?>" alt="<?php echo $review['reviews']; ?>" /></div>
+  <div class="text"><?php echo $review['text']; ?></div>
+</div>
+    <?php if ($review['answers']) {
+        foreach ($review['answers'] as $answer) { ?>
+            <div class="review-list" style="margin-left: 35px; margin-top: -15px;">
+                <div class="author"><b><?php echo $answer['author']; ?></b> <?php echo $text_on; ?> <?php echo $answer['date_added']; ?></div>
+                <div class="text"><?php echo $answer['text']; ?></div>
+            </div>
+        <?php } ?>
+    <?php } ?>
+<?php } ?>
+<div class="pagination"><?php echo $pagination; ?></div>
+<?php } else { ?>
+<div class="content"><?php echo $text_no_reviews; ?></div>
+<?php }  ?>

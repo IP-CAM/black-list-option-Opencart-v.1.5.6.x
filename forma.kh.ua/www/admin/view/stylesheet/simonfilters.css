@@ -1,0 +1,231 @@
+/*
+ * simonfilters - 2.11.0 Build 0013
+*/
+.simonClean td{
+    vertical-align: middle !important;
+    height: 10px !important;
+    border-right: 1px solid #dadada;
+}
+
+.simonClean tr:nth-child(odd) td{background: #efefef}
+
+.simonfilters {
+    position: relative;
+    width: 100%;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.simonfilters h1{
+    font-size: 18px;
+    font-weight: normal;
+    color:#003A88;
+}
+
+.simonfilters_content{
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-color: #fff;
+}
+#tabs{
+    text-align: right;
+}
+
+.simonfilters_content th{
+    text-align: left;
+}
+
+.simonfilters_content td{
+
+}
+
+.simonfilters_content td:nth-child(1), .simonfilters_content td:nth-child(4){
+    vertical-align: top;
+    border-right: 1px solid #dadada;
+}
+
+.simonfilters_content td:nth-child(3){
+    background-color:#dadada;
+    width:1px;
+    padding:1px;
+}
+
+.simonfilters_content td:nth-child(2), .simonfilters_content td:nth-child(5){
+    padding: 5px;
+}
+
+table.attr_item{
+    width:100%;
+}
+
+table.attr_item tr{
+    vertical-align: top;
+    padding: 0px;
+}
+
+table.attr_item td{
+    padding: 5px;
+}
+
+#select_attribute_group{
+    width:100%;
+    padding: 4px;
+    padding-right: 10px;
+    border:2px solid #dadada;
+    margin-bottom: 5px;
+}
+
+.atribute_list,.others_list{
+    margin-bottom: 10px;
+
+    border:2px solid #dadada;
+}
+.atribute_list{
+    //display:none;
+}
+
+.atribute_list legend{
+    padding:10px;
+}
+
+hr{
+    border:1px solid #dadada;
+}
+
+
+textarea.simonfilters_styles_textarea{
+    width:100%;
+    height:200px;
+}
+
+.cssitemchecked{
+    background-color: #fff !important;
+    border-right: 0px !important;
+}
+
+div.cssitem{
+    background: none repeat scroll 0 0 #dddddd;
+}
+div.cssitem, div.cssitemclone{
+
+    border-bottom: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    border-top: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    clear: both;
+    color: #000000;
+    display: block;
+    float: left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 6px 14px 7px 15px;
+    text-align: right;
+    text-decoration: none;
+    width: 179px;
+    cursor: pointer;
+}
+
+div.divvadd input{
+    width:130px;
+}
+
+table.form td.simonpreviewpane{
+    vertical-align: top;
+}
+
+div.simonpreview{
+    border-top: 2px solid #dadada;
+    border-left: 2px solid #dadada;
+    border-right: 2px solid #a0a0a0;
+    border-bottom: 2px solid #a0a0a0;
+    width:100%;
+    height:200px;
+    float: left;
+    padding:0px;
+}
+
+#simon_save_and_stay{
+    background-image: url(http://images.simonoop.com/simon/logosimonoo38x18.png);
+    background-repeat: no-repeat;
+    background-position:3px 3px;
+    padding-left: 45px;
+}
+
+#content{
+    display: none;
+}
+
+.fakeselect{
+    border:1px solid #ddd;
+    padding:3px;
+    width:100px;
+    float:left;
+}
+
+#attr-sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#attr-sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+#attr-sortable li span { position: absolute; margin-left: -1.3em; }
+
+.tab_filters{
+    color:green !important;
+}
+.tab_red{
+    color:red !important;
+}
+
+.htabs a.selected {
+    background: #dadada;
+}
+
+#style_table{
+    width:100% !important;
+    padding:10px !important;
+}
+
+#style_table td:nth-child(3) {
+    background-color: #ffffff !important;
+    padding:5px;
+}
+
+h2{
+    color:;
+    padding:10px;
+    border-bottom:1px solid #aaa;
+    background-color:#dadada;
+-webkit-border-top-left-radius: 10px;
+-webkit-border-top-right-radius: 10px;
+-moz-border-radius-topleft: 10px;
+-moz-border-radius-topright: 10px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+}
+
+h2 span{
+    
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+p.hint{
+    border:1px solid #FFDF7C;
+    background-color:#FFDF7C;
+    padding:10px;
+}
+p.hint span{
+    color:red;
+}
+
+img.langselected{
+    width:25px
+}

@@ -1,0 +1,114 @@
+<?php echo $header; ?><?php echo $column_left; ?><?php echo $column_right; ?>
+<div id="content"><?php echo $content_top; ?>
+  <div class="breadcrumb">
+    <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+    <?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+    <?php } ?>
+  </div>
+  <h1><?php echo $heading_title; ?></h1>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?keyAIzaSyAZZRSQInZ5cma94Rw2zwRJkUnWRUNOcB4&sensor=false"></script>
+<script>
+function rePaintMap(){
+  var geocoder;
+  var map;
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(25, 25);
+    var mapOptions = {
+      zoom: 17,
+      center: latlng,
+		panControl: true,
+    	zoomControl: true,
+    	scaleControl: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+	var address = "<?php echo trim(preg_replace('/\s+/', ' ', strip_tags($address))); ?>";
+	var content = "<h2><?php echo $text_address; ?></h2><?php echo trim(preg_replace('/\s+/', ' ', $address)); ?><?php if ($telephone) { ?><h2><?php echo $text_telephone; ?></h2><?php echo $telephone; ?><?php } ?>";
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            title: address
+        });
+	    map.setCenter(marker.getPosition());
+        var infowindow = new google.maps.InfoWindow({
+     			content: "<div style='width:300px;height:110px;'>"+content+"</div>"
+ 		});
+		google.maps.event.addListener(marker, "click", function (e) {
+			infowindow.open(map,marker);
+		});
+		infowindow.open(map,marker);
+	  } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+}
+$(document).ready(function(){
+	rePaintMap();
+});
+</script>
+<div id="map_canvas" style="width: 100%; height: 400px;margin-bottom:50px;"></div>
+
+  <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
+    <h2><?php echo $text_location; ?></h2>
+    <div class="contact-info">
+      <div class="content"><div class="left"><b><?php echo $text_address; ?></b><br />
+        <?php echo $store; ?><br />
+        <?php echo $address; ?></div>
+      <div class="right">
+        <?php if ($telephone) { ?>
+        <b><?php echo $text_telephone; ?></b><br />
+        <?php echo $telephone; ?><br />
+        <br />
+        <?php } ?>
+        <?php if ($fax) { ?>
+        <b><?php echo $text_fax; ?></b><br />
+        <?php echo $fax; ?>
+        <?php } ?>
+      </div>
+    </div>
+    </div>
+    <h2><?php echo $text_contact; ?></h2>
+    <div class="content">
+    <b><?php echo $entry_name; ?></b><br />
+    <input type="text" name="name" value="<?php echo $name; ?>" />
+    <br />
+    <?php if ($error_name) { ?>
+    <span class="error"><?php echo $error_name; ?></span>
+    <?php } ?>
+    <br />
+    <b><?php echo $entry_email; ?></b><br />
+    <input type="text" name="email" value="<?php echo $email; ?>" />
+    <br />
+    <?php if ($error_email) { ?>
+    <span class="error"><?php echo $error_email; ?></span>
+    <?php } ?>
+    <br />
+    <b><?php echo $entry_file; ?></b><br />
+    <input type="file" name="file" />
+    <br />
+    <br />
+    <b><?php echo $entry_enquiry; ?></b><br />
+    <textarea name="enquiry" cols="40" rows="10" style="width: 99%;"><?php echo $enquiry; ?></textarea>
+    <br />
+    <?php if ($error_enquiry) { ?>
+    <span class="error"><?php echo $error_enquiry; ?></span>
+    <?php } ?>
+    <br />
+    <b><?php echo $entry_captcha; ?></b><br />
+    <input type="text" name="captcha" value="<?php echo $captcha; ?>" />
+    <br />
+    <img src="index.php?route=information/contact/captcha" alt="" />
+    <?php if ($error_captcha) { ?>
+    <span class="error"><?php echo $error_captcha; ?></span>
+    <?php } ?>
+    </div>
+    <div class="buttons">
+      <div class="right"><input type="submit" value="<?php echo $button_continue; ?>" class="button" /></div>
+    </div>
+  </form>
+  <?php echo $content_bottom; ?></div>
+<?php echo $footer; ?>

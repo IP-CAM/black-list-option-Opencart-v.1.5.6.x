@@ -1,0 +1,173 @@
+<!--
+  Copyright (C) 2012 Tri Le <trile7 at gmail dot com>
+
+  You may make copies of this program as may be necessary for backup and archival purposes.
+
+  You may not distribute registered copies of this program to third parties.
+
+  You may not rent, lease, or lend this program.
+
+  this program is provided 'As Is' without any express or implied warranty of any kind, including but not limited to any warranties of merchantability, noninfringement, or fitness of a particular purpose. Tri Le does not warrant or assume responsibility for the accuracy or completeness of any information, text, graphics, links or other items contained within this program. Tri Le makes no warranties respecting any harm that may be caused by the transmission of a computer virus, worm, time bomb, logic bomb, or other such computer program.
+
+  In no event shall Tri Le be liable for any damages (including, without limitation, lost profits, business interruption, or lost information) rising out of 'Authorized Users' use of or inability to use this program.
+-->
+
+<modification>
+  <id>VIP Customer Program</id>
+  <version>0.9.2</version>
+  <vqmver>2.3</vqmver>
+  <author>Tri Le trile7 at gmail dot com</author>
+
+  <file name="admin/controller/sale/order.php">
+    <operation error="log">
+      <search position="after" regex="true"><![CDATA[
+        /addOrderHistory|editOrder/
+      ]]></search>
+      <add><![CDATA[
+//tri mod start
+if (isset($this->request->get["order_id"])) $order_id = $this->request->get["order_id"];
+
+$customer_id = $this->db->query("SELECT customer_id FROM `" . DB_PREFIX . "order` WHERE order_id='" . (int)$order_id . "'")->row["customer_id"];
+
+$this->load->model("module/vip_customer");
+$this->model_module_vip_customer->setVip($customer_id);
+//tri mod end
+    ]]></add>
+    </operation>
+    <operation error="log">
+      <search position="before" regex="true" index="1"><![CDATA[
+        /deleteOrder/
+      ]]></search>
+      <add><![CDATA[
+//tri mod start
+if (isset($this->request->get["order_id"])) $order_id = $this->request->get["order_id"];
+
+$customer_id = $this->db->query("SELECT customer_id FROM `" . DB_PREFIX . "order` WHERE order_id='" . (int)$order_id . "'")->row["customer_id"];
+
+$this->load->model("module/vip_customer");
+$this->model_module_vip_customer->setVip($customer_id);
+//tri mod end
+    ]]></add>
+    </operation>
+  </file>
+
+  <file name="admin/model/sale/customer.php">
+    <operation>
+      <search position="before"><![CDATA[
+        if (isset($data['address'])) {
+      ]]></search>
+      <add><![CDATA[
+//tri mod start
+$this->db->query("UPDATE " . DB_PREFIX . "customer SET vip_init='" . (float)$data["vip_init"] . "' WHERE customer_id='" . (int)$customer_id . "'");
+
+$this->load->model("module/vip_customer");
+$this->model_module_vip_customer->setVip($customer_id);
+//tri mod end
+      ]]></add>
+    </operation>
+  </file>
+
+  <file name="admin/view/template/sale/customer_form.tpl">
+    <operation>
+      <search position="before" offset="1"><![CDATA[
+        $entry_status
+      ]]></search>
+      <add><![CDATA[
+<!-- tri mod start -->
+<?php
+if (empty($this->request->get["customer_id"])) $vip_init = "";
+elseif (isset($this->request->post["vip_init"])) $vip_init = $this->request->post["vip_init"];
+else $vip_init = $this->db->query("SELECT vip_init FROM " . DB_PREFIX . "customer WHERE customer_id='" . (int)$customer_id . "'")->row["vip_init"];
+?>
+<tr>
+  <td><?php $this->language->load("module/vip_customer"); echo $this->language->get("entry_init_vip") ?></td>
+  <td><input type="text" name="vip_init" value="<?php echo $vip_init; ?>"/></td>
+</tr>
+<!-- tri mod end -->
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/" name="module/bestseller.php,module/featured.php,module/latest.php,module/special.php,product/product.php,product/category.php,product/compare.php,product/manufacturer.php,product/search.php,product/special.php,account/wishlist.php">
+    <operation error="log">
+      <search position="before" regex="true"><![CDATA[
+        /.this->data\[.products.\]\[.*\].*array.*/
+      ]]></search>
+      <add><![CDATA[
+//tri mod start
+if (!$special) {
+  $lng = $this->load->language("module/vip_customer");
+
+  $this->load->model("module/vip_customer");
+  $vip_customer = $this->model_module_vip_customer->getVip($this->customer->getId());
+
+  if (!empty($vip_customer["discount"]) && !empty($vip_customer["setting"]["show_product_price"])) {
+    if (isset($result)) $vip_product = $result;
+    elseif (isset($product_info)) $vip_product = $product_info;
+
+    $vip_price = $vip_product['price'] * (1 - $vip_customer["discount"] / 100);
+    $vip_price = $this->currency->format($this->tax->calculate($vip_price, $vip_product['tax_class_id'], $this->config->get('config_tax')));
+
+    $price = "<span class='price-old'>" . $price . "</span>" . str_replace("{vip_price}", $vip_price, $lng["vip_price"]);
+  }
+}
+//tri mod end
+      ]]></add>
+    </operation>
+  </file>
+
+  <file name="catalog/controller/product/product.php">
+    <operation error="log">
+      <search position="before" index="1"><![CDATA[
+        product.tpl
+      ]]></search>
+      <add><![CDATA[
+//tri mod start
+$lng = $this->load->language("module/vip_customer");
+
+$this->load->model("module/vip_customer");
+$vip_customer = $this->model_module_vip_customer->getVip($this->customer->getId());
+
+if (!empty($vip_customer["discount"]) && !(float)$product_info["special"] && !empty($vip_customer["setting"]["show_product_price"])) {
+  $vip_price = $product_info['price'] * (1 - $vip_customer["discount"] / 100);
+  $vip_price = $this->currency->format($this->tax->calculate($vip_price, $product_info['tax_class_id'], $this->config->get('config_tax')));
+
+  $this->data["price"] = "<span class='price-old'>" . $this->data["price"] . "</span>" . str_replace("{vip_price}", $vip_price, $lng["vip_price"]);
+}
+
+if ($vip_customer["setting"]["show_price"]) {
+  $vip_price_html = "";
+  foreach ($this->model_module_vip_customer->getVipPrices($product_info["price"], $product_info["tax_class_id"]) as $vip) {
+    $bold = isset($vip_customer["vip_id"]) && $vip_customer["vip_id"] == $vip["id"] ? "style='font-weight:bold;'" : "";
+    $vip_price_html .= "<div class='vip_row' " . $bold . "><div class='vip_name'>" . $vip["name"] . "</div><div class='vip_price'>" . $vip["price"] . "</div></div>";
+  }
+
+  if ($vip_price_html) {
+    $lng = $this->load->language("module/vip_customer");
+    $this->data["vip_price_html"] = str_replace(array("{vip_price_html}", "\n"), array($vip_price_html, ""), $lng["vip_price_html"]);
+  }
+}
+//tri mod end
+      ]]></add>
+    </operation>
+  </file>
+
+  <file name="catalog/view/theme/*/template/product/product.tpl">
+    <operation error="log">
+      <search position="before"><![CDATA[
+        echo $footer;
+      ]]></search>
+      <add trim="true"><![CDATA[
+<!-- tri mod start -->
+<?php if (isset($vip_price_html)) { ?>
+<script type="text/javascript">
+$(".product-info").find(".price").append("<?php echo $vip_price_html; ?>");
+</script>
+<?php } ?>
+<!-- tri mod end -->
+      ]]></add>
+    </operation>
+  </file>
+
+</modification>
+

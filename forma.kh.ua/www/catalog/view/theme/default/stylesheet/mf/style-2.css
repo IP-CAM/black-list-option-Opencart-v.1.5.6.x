@@ -1,0 +1,9 @@
+
+			.mfilter-counter {
+				background: #428BCA;
+				color: #FFFFFF;
+			}
+			.mfilter-counter:after {
+				border-right-color: #428BCA;
+			}
+		

@@ -1,0 +1,30 @@
+<?php
+// HTTP
+define('HTTP_SERVER', 'http://demo6.demo.pl.ua/');
+define('HTTP_IMAGE', 'http://demo6.demo.pl.ua/image/');
+define('HTTP_ADMIN', 'http://demo6.demo.pl.ua/admin/');
+
+// HTTPS
+define('HTTPS_SERVER', 'http://demo6.demo.pl.ua/');
+define('HTTPS_IMAGE', 'http://demo6.demo.pl.ua/image/');
+
+// DIR
+define('DIR_APPLICATION', '/home/pashast/demo.pl.ua/demo6/catalog/');
+define('DIR_SYSTEM', '/home/pashast/demo.pl.ua/demo6/system/');
+define('DIR_DATABASE', '/home/pashast/demo.pl.ua/demo6/system/database/');
+define('DIR_LANGUAGE', '/home/pashast/demo.pl.ua/demo6/catalog/language/');
+define('DIR_TEMPLATE', '/home/pashast/demo.pl.ua/demo6/catalog/view/theme/');
+define('DIR_CONFIG', '/home/pashast/demo.pl.ua/demo6/system/config/');
+define('DIR_IMAGE', '/home/pashast/demo.pl.ua/demo6/image/');
+define('DIR_CACHE', '/home/pashast/demo.pl.ua/demo6/system/cache/');
+define('DIR_DOWNLOAD', '/home/pashast/demo.pl.ua/demo6/download/');
+define('DIR_LOGS', '/home/pashast/demo.pl.ua/demo6/system/logs/');
+
+// DB
+define('DB_DRIVER', 'mysql');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'demouser00');
+define('DB_PASSWORD', '0mEqvFfs');
+define('DB_DATABASE', 'new_forma');
+define('DB_PREFIX', 'khf2_'); 
+?>

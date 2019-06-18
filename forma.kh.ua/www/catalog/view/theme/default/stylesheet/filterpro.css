@@ -1,0 +1,121 @@
+#filterpro .option_box {
+    /*border: 1px solid #38B0E3;*/
+    /*border-radius: 7px;*/
+    display: inline-block;
+    margin: 5px;
+    min-width: 185px;
+    padding: 5px;
+    vertical-align: top;
+}
+
+#filterpro .price_limit {
+    border: 0;
+/*    color: #38B0E3;
+    font-weight: bold;*/
+    width: 100%;
+}
+
+#filterpro .ui-widget-header {
+    background: none repeat scroll 0 0 #38B0E3;
+    border: 0 none;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+#filterpro select {
+    width: 126px;
+}
+
+#filterpro .ui-state-hover, #filterpro .ui-state-focus, #filterpro .ui-state-active {
+    border: 1px solid #38B0E3;
+    background: none repeat scroll 0 0 #d9f2fc;
+}
+
+#filterpro .price_slider {
+    padding: 5px;
+}
+
+#filterpro .price_slider  input {
+    width: 40px;
+}
+
+#filterpro .option_values {
+    padding-top: 5px;
+}
+
+#filterpro .option_name, #filterpro .attribute_group_name {
+    background: url("../image/filter-bullet-down.png") no-repeat scroll right center transparent;
+    cursor: pointer;
+    padding: 5px;
+}
+#filterpro .attribute_group_name{
+    padding-left: 0;
+}
+
+#filterpro .hided {
+    background: url("../image/filter-bullet-up.png") no-repeat scroll right center transparent;
+    cursor: pointer;
+}
+
+#filterpro_box .clear_filter {
+    border-bottom: 1px dashed;
+    text-decoration: none;
+    float: right;
+    color: #FFF;
+}
+
+#filterpro .collapsible{
+    max-height: 22vmax;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
+}
+
+#filterpro .collapsible table tr{
+    width: 200px;
+    display: inline-block;
+}
+
+#filterpro .price_slider{
+    text-align: center;
+}
+#filterpro img {
+    cursor: pointer;
+    margin: 2px
+}
+
+#filterpro img.selected {
+    border: 2px solid;
+    margin: 0;
+}
+#column-left + #column-right + #content .product-grid > div.loadmask {
+    width: 100%;
+}
+
+#filterpro input {
+    margin: 4px 3px;
+}
+#filterpro table{
+     margin-bottom: 5px;
+     display: block !important;
+}
+#ajaxBusy{
+	margin: 0px auto;
+    padding: 0px;
+    position: absolute;
+    top: 30%;
+    left: 43%;
+    width: 150px;
+    height: 50px;
+    /* opacity: 0.3; */
+    background: #2bb8f5;
+    display: none;
+    z-index: 999;
+    -webkit-box-shadow: rgb(41, 41, 41) 0px 0px 150px;
+    -moz-box-shadow: rgb(41, 41, 41) 0px 0px 150px;
+    box-shadow: rgb(90, 90, 90) 1px 0px 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 7px;
+    font-size: 17px;	
+}

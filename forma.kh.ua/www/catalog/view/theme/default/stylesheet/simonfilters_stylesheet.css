@@ -1,0 +1,139 @@
+/*
+ * simonfilters - 2.11.0 Build 0013
+*/
+
+pre.small{
+    width:20px;
+    height:20px;
+    font-size: 0.0em;
+}
+
+
+#simonfilters_price_amount, .sfsamount{
+    padding-top: 5px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #38B0E3;
+}
+
+.filter_group[filtertype='p'] .filter_title, .sfslider .filter_title{
+    left:6px !important;
+    border-bottom:0px !important;
+    margin-bottom: 3px;
+
+}
+
+/*
+* uncomment to style the price range & handles
+*/
+
+.ui-widget-header {
+    background: #FF0000 !important;
+}
+
+/*
+.ui-widget-header {
+    background: red !important;
+}
+.ui-slider .ui-slider-handle {
+    background:red !important;
+}
+*/
+
+/*************************************************************
+common
+*************************************************************/
+div.box.simonfilters ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: -5px;
+}
+
+div.box.simonfilters .filter_title{
+    font-weight: bold;
+    color:red;
+    border-bottom: 1px solid #eaeaea;
+    display: none;
+    padding-top:4px
+}
+
+div.box.simonfilters .clear_filters_global,
+div.box.simonfilters .clear_filters_local{
+    float:right;
+    color:#38B0E3;
+    cursor:pointer;
+    display:none;
+    clear:right;
+}
+
+div.box.simonfilters .add_filter{
+    padding:3px;
+    padding-left:15px;
+    font-size: 16px;
+   /* font-weight: bold;*/
+    cursor:pointer;
+    clear:right;
+}
+
+div.box.simonfilters .filter_title{
+    background-color: #eee;
+    padding:2px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    width:100%;
+}
+
+div.box.simonfilters td:first-child{
+    padding:0px;
+    white-space:nowrap;
+}
+
+div.box.simonfilters ul. table{
+    width:100%;
+    border-bottom:1px solid #dadada;
+}
+
+div.box.simonfilters ul  li:last-child table{
+    border:0px;
+}
+
+div.box.simonfilters ul tr td:first-child{
+    padding-left: 2px;
+    padding-right: 10px;
+}
+
+div.box.simonfilters li.add_filter
+, li.separator{
+    float:left;
+    padding-right:15px;
+}
+
+.simonfilters li.separator {
+    display: none;
+}
+
+div.box.simonfilters .filter_ul li:last-child{
+    display: none;
+}
+
+div.box.simonfilters .checked{
+    font-style:italic;
+    color:#a1a1a1;
+}
+
+
+div.box.simonfilters .unchecked{
+    padding: 2px 3px 3px 20px;
+    background-repeat: no-repeat !important;
+    background: url("/image/simonfilters/check_small_off.png");
+}
+div.box.simonfilters .checked{
+    padding: 2px 3px 3px 20px;
+    background-repeat: no-repeat !important;
+    background: url("/image/simonfilters/check_small_on.png");
+}
+
