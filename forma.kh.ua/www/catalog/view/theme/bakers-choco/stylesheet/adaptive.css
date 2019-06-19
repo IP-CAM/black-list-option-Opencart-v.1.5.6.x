@@ -13,7 +13,6 @@
 	overflow-x: hidden;
 }
 
-
 @media screen and (min-width: 1366px) and (max-width: 1600px) {
 
 .product-grid > div {
@@ -646,6 +645,7 @@ div.slideshow {
 	width: 50% !important;
 }
 
+
 }
 
 
@@ -833,7 +833,6 @@ margin-right: 2px;
 .product-info .left {
 	width: auto !important;
 }
-
 }
 
 
@@ -895,7 +894,6 @@ margin-right: 2px;
 .tabs #tab-review textarea {
 	margin-left: 0;
 }
-
 }
 
 
@@ -1029,3 +1027,17 @@ margin-right: 2px;
 		    font-size: 15px;
 		}
 	}
+@media (max-width: 850px){
+    
+    .mobi{
+        display: inline;
+    }
+    
+}
+@media (min-width: 850px){
+    
+    .mobi{
+        display: none;
+    }
+    
+}

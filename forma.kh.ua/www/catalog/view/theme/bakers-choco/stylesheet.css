@@ -3511,6 +3511,9 @@ a.price-download-text{
 		margin-bottom: 40px;
 		text-align: center;
 	}
+    .mobi{
+        display: inline;
+    }
 }
 
 .product-info #quantity{

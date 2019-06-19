@@ -11,38 +11,16 @@
     <!--<?php if ($thumb) { ?>
     <div class="image"><img src="<?php echo $thumb; ?>" alt="<?php echo $heading_title; ?>" /></div>
     <?php } ?>-->
-    <?php if ($description) { ?>
-    <?php echo $description; ?>
-
-    <?php } ?>
+    
     <br>
     <? echo $text_download_price; ?>
+    <br>
+    <?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+    <a href="<?php echo $actual_link; ?>?export=true" class="mobi price-download-button"><?php echo $button_price; ?></a>
+    <button class="mobi" style="cursor: pointer;background-color: #38b0e3;color: #fff;padding: 4px 10px;border: none; border-radius: 5px;" id='all_products' value='<?php echo $product_total; ?>'><? echo $text_products_all; ?></button>
   </div>
   <?php } ?>
 
-<!--  <?php /* if ($categories) { ?>
-  <h2><?php echo $text_refine; ?></h2>
-  <div class="category-list">
-    <?php if (count($categories) <= 5) { ?>
-    <ul>
-      <?php foreach ($categories as $category) { ?>
-      <li><a href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a></li>
-      <?php } ?>
-    </ul>
-    <?php } else { ?>
-    <?php for ($i = 0; $i < count($categories);) { ?>
-    <ul>
-      <?php $j = $i + ceil(count($categories) / 4); ?>
-      <?php for (; $i < $j; $i++) { ?>
-      <?php if (isset($categories[$i])) { ?>
-      <li><a href="<?php echo $categories[$i]['href']; ?>"><?php echo $categories[$i]['name']; ?></a></li>
-      <?php } ?>
-      <?php } ?>
-    </ul>
-    <?php } ?>
-    <?php } ?>
-  </div>
-  <?php } */ ?>-->
   <?php echo $content_top; ?>
   <!--<?php if($category_id == 62) { ?>
   <style type="text/css">
