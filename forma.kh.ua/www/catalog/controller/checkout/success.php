@@ -21,7 +21,7 @@ class ControllerCheckoutSuccess extends Controller {
 			unset($this->session->data['voucher']);
 			unset($this->session->data['vouchers']);
 		}	
-									   
+        
 		$this->language->load('checkout/success');
 		
 		if (! empty($this->session->data['last_order_id']) ) {
@@ -61,12 +61,15 @@ class ControllerCheckoutSuccess extends Controller {
 		} else {
     		$this->data['heading_title'] = $this->language->get('heading_title');
 		}
-		
-		if ($this->customer->isLogged()) {
-			$this->data['text_message'] = sprintf($this->language->get('text_customer'), $this->url->link('payment/payment_schet/printpay&order_id=' . $this->session->data['last_order_id'], '', 'SSL'), $this->session->data['last_order_id'], $this->url->link('account/account', '', 'SSL'), $this->url->link('account/order', '', 'SSL'), $this->url->link('account/download', '', 'SSL'), $this->url->link('information/contact'));
-		} else {
-    		$this->data['text_message'] = sprintf($this->language->get('text_guest'), $this->url->link('payment/payment_schet/printpay&order_id=' . $this->session->data['last_order_id'], '', 'SSL'), $this->session->data['last_order_id'],  $this->session->data['last_order_id'], $this->url->link('information/contact'));
-		}
+        if (! empty($this->session->data['last_order_id']) ) {
+            if ($this->customer->isLogged()) {
+                $this->data['text_message'] = sprintf($this->language->get('text_customer'), $this->url->link('payment/payment_schet/printpay&order_id=' . $this->session->data['last_order_id'], '', 'SSL'), $this->session->data['last_order_id'], $this->url->link('account/account', '', 'SSL'), $this->url->link('account/order', '', 'SSL'), $this->url->link('account/download', '', 'SSL'), $this->url->link('information/contact'));
+            } else {
+                $this->data['text_message'] = sprintf($this->language->get('text_guest'), $this->url->link('payment/payment_schet/printpay&order_id=' . $this->session->data['last_order_id'], '', 'SSL'), $this->session->data['last_order_id'],  $this->session->data['last_order_id'], $this->url->link('information/contact'));
+            }
+        } else {
+            $this->data['text_message'] = '';
+        }
 		
     	$this->data['button_continue'] = $this->language->get('button_continue');
 
@@ -87,8 +90,10 @@ class ControllerCheckoutSuccess extends Controller {
 			'common/header'			
 		);
         
-        $this->getChild('module/moco/moco_ajax/push_order', $this->session->data['last_order_id']);
-				
+        if (! empty($this->session->data['last_order_id']) ) {
+            $this->getChild('module/moco/moco_ajax/push_order', $this->session->data['last_order_id']);
+        }
+        
 		$this->response->setOutput($this->render());
   	}
 }
