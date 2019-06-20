@@ -225,6 +225,9 @@ class ControllerCommonHeader extends Controller {
 			'module/cart',
             'module/clientsource'
 		);
+        
+        $this->data['json_ld_website'] = $this->getChild('common/json_ld/website');
+        $this->data['json_ld_organization'] = $this->getChild('common/json_ld/organization');
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/header.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/common/header.tpl';

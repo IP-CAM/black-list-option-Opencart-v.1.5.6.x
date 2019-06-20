@@ -50,6 +50,9 @@ DD_belatedPNG.fix('#logo img');
 <?php echo $google_analytics; ?>
 </head>
 <body>
+    
+    <? echo $json_ld_website;?>
+    <? echo $json_ld_organization;?>
 
 <div id="container">
 <div id="header">

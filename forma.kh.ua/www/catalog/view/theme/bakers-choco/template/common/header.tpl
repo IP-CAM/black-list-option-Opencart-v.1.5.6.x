@@ -184,6 +184,10 @@
     </style>
 </head>
 <body>
+    
+    <? echo $json_ld_website;?>
+    <? echo $json_ld_organization;?>
+    
     <div class="modalInner">
     <section class="offer">
     <h5 style="margin: auto;"><?php echo 'Зарегистрировавшись сейчас! <br>
