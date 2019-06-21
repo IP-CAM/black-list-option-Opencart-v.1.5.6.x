@@ -86,4 +86,3 @@ $_['abs_plastic_add_descr'] = 'зроблені з чорного поліпро
 $_['text_dimensions'] = 'Розміри:';
 $_['text_weight'] = 'Вага:';
 $_['text_amount'] = 'Кількість штук на м.кв.';
-$_['text_pc'] = 'шт.';

@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="<?php echo $direction; ?>" lang="<?php echo $lang; ?>" xml:lang="<?php echo $lang; ?>">
 <head>
+    
     <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=6LdoW6AUAAAAALVQHhxZgcYQF3M4ib645Zx4udhb"></script>
     <meta name="google-site-verification" content="KG1c1UzL0iNPVcrjN02S6rAdpgl-qu2udEvyGrb2TfQ" />
     <title><?php echo $title; ?></title>
@@ -47,7 +48,8 @@
     <link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/arcticmodal/jquery.arcticmodal.css" />
     <link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/arcticmodal/themes/dark.css" />
     <script src="catalog/view/javascript/jquery/arcticmodal/jquery.arcticmodal.js"></script>
-
+    
+    <script type="text/javascript" src="catalog/view/javascript/productparam2.0.js"></script>
 
     <!-- Global site tag (gtag.js) - AdWords: 1011677888 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1011677888"></script>

@@ -66,4 +66,4 @@ $_['abs_plastic_add_descr'] = 'made of black polypropylene thickness of 3 mm. Th
 $_['text_dimensions'] = 'Dimensions:';
 $_['text_weight'] = 'Weight:';
 $_['text_amount'] = 'Number of pieces per sq.m.';
-$_['text_pc'] = 'pc.';
+

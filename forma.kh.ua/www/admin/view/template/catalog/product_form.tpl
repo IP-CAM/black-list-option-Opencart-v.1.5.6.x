@@ -352,8 +352,31 @@
             <?php foreach ($product_attributes as $product_attribute) { ?>
             <tbody id="attribute-row<?php echo $attribute_row; ?>">
               <tr>
-                <td class="left"><input type="text" name="product_attribute[<?php echo $attribute_row; ?>][name]" value="<?php echo $product_attribute['name']; ?>" />
-                  <input type="hidden" name="product_attribute[<?php echo $attribute_row; ?>][attribute_id]" value="<?php echo $product_attribute['attribute_id']; ?>" />
+                <td class="left">
+                    <input type="text" name="product_attribute[<?php echo $attribute_row; ?>][name]" value="<?php echo $product_attribute['name']; ?>" />
+                    <input type="hidden" name="product_attribute[<?php echo $attribute_row; ?>][attribute_id]" value="<?php echo $product_attribute['attribute_id']; ?>" />
+                    <select name="product_attribute[<?php echo $attribute_row; ?>][attribute_id]" style="width: 300px">
+                        <option value="<?php echo $product_attribute['attribute_id']; ?>"><?php echo $product_attribute['name']; ?></option>
+                    </select>
+                    <script>
+                        $('select[name="product_attribute[<?php echo $attribute_row; ?>][attribute_id]"]').select2({
+                            minimumInputLength: 1,
+                            ajax: {
+                                url: '/admin/index.php?route=catalog/attribute/autocomplete&limit=999&token=<?php echo $token; ?>',
+                                dataType: 'json',
+                                data: (params)=>{return {'filter_name': params.term};},
+                                processResults: function (json) {
+                                    var data = {results: []};
+                                    $.each(json, function (i, item) {
+                                        data.results.push({id: item.attribute_id, text: item.name});
+                                    });
+                                    return data;
+                                }
+                            }
+
+                          }).on("select2:selecting", function(e) { $('input[name="product_attribute[<?php echo $attribute_row; ?>][attribute_id]"]').val(e.params.args.data.id) });
+
+                    </script>
 <?php //var_dump($attribute_row);?>
 
                 <?php if ($product_attribute['attr_check'] == true){ ?>
@@ -390,7 +413,7 @@
             <?php $option_row++; ?>
             <?php } ?>
             <span id="option-add">
-            <input name="option" value="" style="width: 130px;" />
+            <input name="option" value="" style="width: 130px;" />            
             &nbsp;<img src="view/image/add.png" alt="<?php echo $button_add_option; ?>" title="<?php echo $button_add_option; ?>" /></span></div>
           <?php $option_row = 0; ?>
           <?php $option_value_row = 0; ?>
@@ -811,22 +834,38 @@ $('#product-related div img').live('click', function() {
 var attribute_row = <?php echo $attribute_row; ?>;
 
 function addAttribute() {
-	html  = '<tbody id="attribute-row' + attribute_row + '">';
-    html += '  <tr>';
-	html += '    <td class="left"><input type="text" name="product_attribute[' + attribute_row + '][name]" value="" /><input type="hidden" name="product_attribute[' + attribute_row + '][attribute_id]" value="" /><label class="checkbox-inline"><input type="checkbox" name="product_attribute[<?php echo $attribute_row; ?>][attr_check]" value="1">Отображать в категории</label></td>';
-	html += '    <td class="left">';
-	<?php foreach ($languages as $language) { ?>
+    html  = '<tbody id="attribute-row' + attribute_row + '">\n';
+    html += '  <tr>\n';
+	html += '    <td class="left">\n';
+    html += '<select name="product_attribute['+attribute_row+'][attribute_id]" style="width: 300px"><option value=""></option></select>\n';
+    html += '<script>\n';
+    html += '       $(\'select[name="product_attribute['+attribute_row+'][attribute_id]"]\').select2({\n';
+    html += '           minimumInputLength: 1,\n';
+    html += '           ajax: {\n';
+    html += '               url: \'/admin/index.php?route=catalog/attribute/autocomplete&limit=999&token=<? echo $token; ?>\',\n';
+    html += '              dataType: \'json\',\n';
+    html += '               data: (params)=>{return {\'filter_name\': params.term};},\n';
+    html += '               processResults: function (json) {\n';
+    html += '                   var data = {results: []};\n';
+    html += '                   $.each(json, function (i, item) {\n';
+    html += '                       data.results.push({id: item.attribute_id, text: item.name});\n';
+    html += '                   });\n';
+    html += '                   return data;\n';
+    html += '               }\n';
+    html += '           }\n';
+    html += '}).on("select2:selecting", function(e) { $(\'input[name="product_attribute['+attribute_row+'][attribute_id]"]\').val(e.params.args.data.id) });\n';
+    html += '<\/script>\n';
+    html += '</td>';
+	html += '<td class="left">';
+	<? foreach ($languages as $language) { ?>
 	html += '<textarea name="product_attribute[' + attribute_row + '][product_attribute_description][<?php echo $language['language_id']; ?>][text]" cols="40" rows="5"></textarea><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" align="top" /><br />';
-    <?php } ?>
+    <? } ?>
 	html += '    </td>';
 	html += '    <td class="left"><a onclick="$(\'#attribute-row' + attribute_row + '\').remove();" class="button"><?php echo $button_remove; ?></a></td>';
     html += '  </tr>';	
     html += '</tbody>';
 	
-	$('#attribute tfoot').before(html);
-	
-	attributeautocomplete(attribute_row);
-	
+	$('#attribute tfoot').before(html);	
 	attribute_row++;
 }
 
@@ -1026,7 +1065,7 @@ function addOptionValue(option_row) {
 	html += '    <td class="left"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][option_value_id]">';
 	html += $('#option-values' + option_row).html();
 	html += '    </select><input type="hidden" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][product_option_value_id]" value="" /></td>';
-	html += '    <td class="right"><input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][quantity]" value="" size="3" /></td>'; 
+    html += '    <td class="right"><input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][quantity]" value="" size="3" /></td>'; 
 	html += '    <td class="left"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][subtract]">';
 	html += '      <option value="1"><?php echo $text_yes; ?></option>';
 	html += '      <option value="0"><?php echo $text_no; ?></option>';
@@ -1048,11 +1087,14 @@ function addOptionValue(option_row) {
 	html += '    <input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][weight]" value="" size="5" /></td>';
    html += '<td class="left"><input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][image_num]" value="" size="3"/></td>';
 	html += '    <td class="left"><a onclick="$(\'#option-value-row' + option_value_row + '\').remove();" class="button"><?php echo $button_remove; ?></a></td>';
-	html += '  </tr>';
+
+    
+
+    html += '  </tr>';
 	html += '</tbody>';
 	
 	$('#option-value' + option_row + ' tfoot').before(html);
-
+    $('select[name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][option_value_id]"]').select2();
 	option_value_row++;
 }
 //--></script> 

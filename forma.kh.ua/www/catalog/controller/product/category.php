@@ -199,7 +199,8 @@ class ControllerProductCategory extends Controller {
 				$this->data['button_compare'] = $this->language->get('button_compare');
 				$this->data['button_continue'] = $this->language->get('button_continue');
 				$this->data['currency_alt'] =  $this->language->get('currency_alt');
-
+                $this->data['text_pc'] = $this->language->get('text_pc');
+                
 				if ($category_info['image']) {
 					$this->data['thumb'] = $this->model_tool_image->resize($category_info['image'], $this->config->get('config_image_category_width'), $this->config->get('config_image_category_height'));
 				} else {
@@ -274,7 +275,7 @@ class ControllerProductCategory extends Controller {
 						}
 					}
 
-
+                    $priceSourse = $this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax'));
 					if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
 						$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')));
 					} else {
@@ -331,6 +332,7 @@ class ControllerProductCategory extends Controller {
 						'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0,160) . '..',
 						'options'	  => $this->model_catalog_product->getProductOptions($result['product_id']),
 						'price'       => $price,
+                        'priceSourse' =>$priceSourse,
 						'price_value'       => $price_value,
 						'special'     => $special,
 						'tax'         => $tax,

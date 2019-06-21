@@ -52,70 +52,38 @@
           <?php } ?>
 
         <span><?php echo $text_stock; ?></span> <?php echo $stock; ?></div>
-      <?php if ($price) { ?>
-      <?php $price_unit = $price; ?>
-      <div class="price">
-        <?php if (!$special) { ?>
-        <span id="price_container" price="<?php echo $priceS ?>" min="<?php echo $minimum ?>">
-		<?php
-		echo $priceS;
-		 ?>
-		 </span>
-		 <?php if ($minimum > 1) { echo $currency2; }?>
-        <?php } else { ?>
-        <span class="price-old"><?php echo $price; ?></span> <span class="price-new"><?php echo $special; ?></span>
-        <?php } ?>
-        <?php if ($minimum > 1) 
-		{ ?>
-			<div class="minimum" style="font-size:19px;display:inline-block;"><?php echo $text_minimum; ?>
-				<?php if ($sku) { ?> <?php echo $sku; ?><?php } ?>
-			</div>
-
-			<div style="font-size: 20px; margin: 0;"><? echo $text_price ?>
-				<span id="onepricee" price="<?php echo $priceS2;?>">
-						<?php echo $priceS2; }?>
-				</span> <?php echo $currency2; ?>/<? echo $text_pc ?>
-			</div>
-
-			
-
-			  <?php if ($customer_group_id == 3) { ?>
-			  <span class="foryou"><a title="Ваши преимущества" class="colorbox" rel="table" href="image/custom-<?php echo $customer_group_id; ?>.png">Только для вас</a></span>
-			  <?php } ?>
-			  <?php if ($customer_group_id == 4) { ?>
-			  <span class="foryou"><a title="Ваши преимущества" class="colorbox" rel="table" href="image/custom-<?php echo $customer_group_id; ?>.png">Только для вас</a></span>
-			  <?php } ?>
-
-
-			<br />
-
-        <?php if ($tax) { ?>
-        <span class="price-tax"><?php echo $text_tax; ?> <?php echo $tax; ?></span><br />
-        <?php } ?>
-        <?php if ($points) { ?>
-        <span class="reward"><small><?php echo $text_points; ?> <?php echo $points; ?></small></span><br />
-        <?php } ?>
-
-    <?php if (!$special) { ?>
-        <div class="discount">
-            <span style="display: none;" id="onepricee2" price="<?php echo $priceS2;?>">
-                <?php echo $priceS2; ?>
+        <?php if ($price) { ?>
+        <div class="price" data-price="<?php echo $priceSourse; ?>" data-currency="<? echo $currency['symbol_right'];?>" data-pc="<? echo $text_pc ?>">
+            <span>
+            <?php if (!$special) { ?>
+                <?php echo $price; ?>/<?php echo $text_pc; ?>
+            <?php } else { ?>
+            <span class="price-old"><?php echo $price; ?>/<?php echo $text_pc; ?></span> <span class="price-new"><?php echo $special; ?>/<?php echo $text_pc; ?></span>
+            <?php } ?>
             </span>
-        <?php if ($this->config->get('config_display_sku') && $sku && $minimum>1 ) { ?>
-            <br/>
-            Цена за 1 <?php echo $sku; ?> - <?php echo $price; ?>
-            <br/>
-        <?php } ?>
-        <?php if ($discounts) { ?>
-            <?php $text_sku = $sku; ?>
-                <?php foreach($discounts as $discount) { ?>
-                    <?php echo sprintf($text_discount,  $discount['quantity'], $text_sku, $discount['price'], $text_sku); ?><br />
-                <?php } ?>
+            <br />
+            <?php if ($tax) { ?>
+            <span class="price-tax"><?php echo $text_tax; ?> <?php echo $tax; ?></span><br />
+            <?php } ?>
+            <?php if ($points) { ?>
+            <span class="reward"><small><?php echo $text_points; ?> <?php echo $points; ?></small></span><br />
+            <?php } ?>
+            <?php if ($discounts) { ?>
+            <br />
+            <div class="discount">
+              <?php foreach ($discounts as $discount) { ?>
+              <?php echo sprintf($text_discount, $discount['quantity'], $discount['price']); ?>/<?php echo $text_pc; ?><br />
+              <?php } ?>
+            </div>
+            <?php } ?>
+            <?php if ($customer_group_id == 3) { ?>
+            <span class="foryou"><a title="Ваши преимущества" class="colorbox" rel="table" href="image/custom-<?php echo $customer_group_id; ?>.png">Только для вас</a></span>
+            <?php } ?>
+            <?php if ($customer_group_id == 4) { ?>
+            <span class="foryou"><a title="Ваши преимущества" class="colorbox" rel="table" href="image/custom-<?php echo $customer_group_id; ?>.png">Только для вас</a></span>
             <?php } ?>
         </div>
-    <?php } ?>
-
-    </div>
+      
 
       <?php } ?>
       <?php if ($options) { ?>
@@ -646,7 +614,6 @@ function updateImages (updater) {
 console.log('product_id=<? echo $product_id;?>');
 </script>
 
-<script type="text/javascript" src="catalog/view/javascript/productparam.js"></script>
 
 <style type="text/css">
 .product-info .review .share {
@@ -674,3 +641,6 @@ console.log('product_id=<? echo $product_id;?>');
 </style>
 
 
+<script type="text/javascript">
+$(document).ready(productparam_refreshEvent());	
+</script>

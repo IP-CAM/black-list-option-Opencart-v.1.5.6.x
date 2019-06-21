@@ -67,4 +67,6 @@ $_['button_show_more']          = 'Show more';
 $_['text_download_price']          = 'You can download the price by clicking on the button below.';
 $_['text_products_all']          = 'Display all products';
 
+$_['text_pc'] = 'pc.';
+
 ?>

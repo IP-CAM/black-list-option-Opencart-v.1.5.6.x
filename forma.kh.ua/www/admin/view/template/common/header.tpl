@@ -22,6 +22,10 @@
 <link type="text/css" href="view/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="view/javascript/jquery/tabs.js"></script>
 <script type="text/javascript" src="view/javascript/jquery/superfish/js/superfish.js"></script>
+
+<script type="text/javascript" src="view/javascript/select2-4.0.7/js/select2.full.min.js"></script>
+<link type="text/css" rel="stylesheet" href="view/javascript/select2-4.0.7/css/select2.min.css"/>
+
 <?php foreach ($scripts as $script) { ?>
 <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>

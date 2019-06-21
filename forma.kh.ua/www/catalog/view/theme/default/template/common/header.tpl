@@ -29,7 +29,7 @@
 <script type="text/javascript" src="catalog/view/javascript/jquery/tabs.js"></script>
 <script type="text/javascript" src="catalog/view/javascript/common.js"></script>
 <script type="text/javascript" src="catalog/view/javascript/common-n.js"></script>
-
+<script type="text/javascript" src="catalog/view/javascript/productparam2.0.js"></script>
 <?php foreach ($scripts as $script) { ?>
 <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>

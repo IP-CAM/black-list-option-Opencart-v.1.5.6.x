@@ -38,10 +38,11 @@ class ReCaptcha
     private function _encodeQS($data)
     {
         $req = "";
-        foreach ($data as $key => $value) {
-            $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
+        if(is_array($data)){
+            foreach ($data as $key => $value) {
+                $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
+            }
         }
-
         // Cut the last '&'
         $req=substr($req, 0, strlen($req)-1);
         return $req;
@@ -73,9 +74,9 @@ class ReCaptcha
      */
     public function verifyResponse($remoteIp, $response)
     {
+        $recaptchaResponse = new ReCaptchaResponse();
         // Discard empty solution submissions
         if ($response == null || strlen($response) == 0) {
-            $recaptchaResponse = new ReCaptchaResponse();
             $recaptchaResponse->success = false;
             $recaptchaResponse->errorCodes = 'missing-input';
             return $recaptchaResponse;
@@ -91,74 +92,54 @@ class ReCaptcha
             )
         );
         $answers = json_decode($getResponse, true);
-        $recaptchaResponse = new ReCaptchaResponse();
-
         if (trim($answers ['success']) == true) {
             $recaptchaResponse->success = true;
         } else {
             $recaptchaResponse->success = false;
-            $recaptchaResponse->errorCodes = $answers [error-codes];
+            $recaptchaResponse->errorCodes = $answers['error-codes'];
         }
 
         return $recaptchaResponse;
     }
 }
 
-class ControllerSpcallmebackAjax extends Controller {
-    
-    private $token = "871357307:AAFvlqdJzBKSvHLO7IHk9FY9Qrsw3miHx_M";
-    private $chat_ids = [
-                    "-396766706"
-            ];
-    
-    private $info;
-    
-    public function __construct($registry) {
-        parent::__construct($registry);
-        
-        $Info_IP = $this->getInfo_IP();
-        
-        if(isset($Info_IP->geoplugin_request)){            
-            $data["ip"] = $Info_IP->geoplugin_request;
-        } else {
-            $data["ip"] = "---";
-        }
-        
-        if(isset($Info_IP->geoplugin_countryName)){            
-            $data["ip_countryName"] = $Info_IP->geoplugin_countryName;
-        } else {
-            $data["ip_countryName"] = "---";
-        }
-        
-        if(isset($Info_IP->geoplugin_regionName)){
-            $data["ip_regionName"] = $Info_IP->geoplugin_regionName;
-        } else {
-            $data["ip_regionName"] = "---";
-        }
-        
-        if(isset($Info_IP->geoplugin_city)){
-            $data["ip_city"] = $Info_IP->geoplugin_city;
-        } else {
-            $data["ip_city"] = "---";
-        }
-        $this->info = $data; 
-    }
+class ControllerSpcallmebackAjax extends Controller {   
     
     public function index() {
         
         $this->language->load('module/spcallmeback');
-        
-        $reCaptchaV3 = new ReCaptcha('6LdoW6AUAAAAAPS4Z13GnZn9jvJ476ltFM5rhfjm');
-        
-        $responseRCV3 = $reCaptchaV3->verifyResponse($_SERVER['REMOTE_ADDR'], $this->request->post['spcallmeback-recaptcha']);
-        
-        if(!$responseRCV3->success){
-            echo '<div class="spcallmeback_wrap"><h4>'.$this->language->get('text_error_title').'</h4><br/>'.$this->language->get('text_error_recaptcha').'</div>';
+        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+            $reCaptchaV3 = new ReCaptcha('6LdoW6AUAAAAAPS4Z13GnZn9jvJ476ltFM5rhfjm');
+
+            $responseRCV3 = $reCaptchaV3->verifyResponse($_SERVER['REMOTE_ADDR'], $this->request->post['spcallmeback-recaptcha']);
+
+            if(!$responseRCV3->success){
+                echo '<div class="spcallmeback_wrap"><h4>'.$this->language->get('text_error_title').'</h4><br/>'.$this->language->get('text_error_recaptcha').'</div>';
+                die;
+            }
+
+            $this->request->post['url'] = $this->request->post['spcallmeback-url'];
+            $this->request->post['title'] = $this->request->post['spcallmeback-title'];
+            $this->request->post['telephone'] = $this->request->post['tel'];
+            $this->request->post['name'] = $this->request->post['name'];
+
+            try {
+                $this->getChild('module/moco/moco_ajax/push_phone');
+                $status = true;
+            } catch (Exception $exc) {
+                $status = false;
+                echo $exc->getTraceAsString();
+            }
+
+            echo '<div class="spcallmeback_wrap"><h4>'.$this->language->get('text_form_caption').'</h4><br/>';
+            if($status){
+                echo $this->language->get('text_email_delivery_success');
+            }else{
+                echo $this->language->get('text_email_delivery_failure');
+            }
+            echo '</div>';
             die;
         }
-        
-        $this->pushPhone($this->request->post);
-        
         global $session, $languages;
         $lang_code = $session->data['language'];
 		
@@ -191,8 +172,7 @@ class ControllerSpcallmebackAjax extends Controller {
         
         if ($form === true)
         {
-            echo('<div class="spcallmeback_wrap"><h4>'.$form_caption.'</h4>
-                <br />');
+            echo('<div class="spcallmeback_wrap"><h4>'.$form_caption.'</h4><br />');
                             
             /*$additional1 = isset($_POST['additional1']) ? stripslashes($_POST['additional1']) : '';
             $additional2 = isset($_POST['additional2']) ? stripslashes($_POST['additional2']) : '';
@@ -200,62 +180,61 @@ class ControllerSpcallmebackAjax extends Controller {
             $email = stripslashes($_POST['email']);
             $phone = stripslashes($_POST['phone']);*/
             
-            $name = html_entity_decode($_POST['name']);
-            if (!$name)
-                $name = $this->data['text_anonym'];
-            
-            $our_email = $this->model_spcallmeback_form->getFieldName('email');
-            $subject = sprintf($this->data['text_email_subject'], strip_tags($form_caption));
-            $from = strip_tags($form_caption);
-            /*if ($lang_code == 'ru') {
-	            $from = convert_cyr_string($this->Utf8($from), "w", "k" );
-	            $from = '=?koi8-r?B?'.base64_encode($from).'?=';
-            }*/
-            $from = '=?utf-8?B?'.base64_encode($from).'?=';
-            
-            
-            $res1 = true;
-            
-            $body = sprintf($this->data['text_email_body'], $name, strip_tags($form_caption));
-            foreach($this->model_spcallmeback_form->fields as $field)
-            {
-                $order = $this->config->get($field.'_order') !== NULL ? $this->config->get($field.'_order') : 1;
-                if ($order > 0)
-                {
-                    $value = nl2br(html_entity_decode($_POST[$field]));
-                    if ($field == 'time')
-                    {
-                        $time = explode('-', trim(strtolower($value)));
-                        $selected_hour1 = $selected_hour2 = '-';
-                        /*if (!isset($time[0]) || $time[0] === '')
-                            $time[0] = '';
-                        if (!isset($time[1]) || $time[1] === '')
-                            $time[1] = '';*/
-                        if (isset($time[0]) && $time[0] !== '')
-                            $selected_hour1 = $time[0];
-                        if (isset($time[1]) && $time[1] !== '')
-                            $selected_hour2 = $time[1];
-                        $value = sprintf($this->data['text_email_hours_range'], $selected_hour1, $selected_hour2);
-                        
-                    }
-                    $label = html_entity_decode($this->model_spcallmeback_form->getFieldName('name_'.$field));
-                    $body .= "<b>$label</b>: ".$value."<br />";
-                }
-            }
-            $body .= "<br /><br /><br />";
-            $res2 = $this->sendHtmlMessage($our_email, $subject, $body, $from, $our_email);
-
-            if ($res1 && $res2)
-              echo $this->data['text_email_delivery_success'];
-            else
-              echo $this->data['text_email_delivery_failure'];
-            die('</div>');
+//            $name = html_entity_decode($_POST['name']);
+//            if (!$name)
+//                $name = $this->data['text_anonym'];
+//            
+//            $our_email = $this->model_spcallmeback_form->getFieldName('email');
+//            $subject = sprintf($this->data['text_email_subject'], strip_tags($form_caption));
+//            $from = strip_tags($form_caption);
+//            /*if ($lang_code == 'ru') {
+//	            $from = convert_cyr_string($this->Utf8($from), "w", "k" );
+//	            $from = '=?koi8-r?B?'.base64_encode($from).'?=';
+//            }*/
+//            $from = '=?utf-8?B?'.base64_encode($from).'?=';
+//            
+//            
+//            $res1 = true;
+//            
+//            $body = sprintf($this->data['text_email_body'], $name, strip_tags($form_caption));
+//            foreach($this->model_spcallmeback_form->fields as $field)
+//            {
+//                $order = $this->config->get($field.'_order') !== NULL ? $this->config->get($field.'_order') : 1;
+//                if ($order > 0)
+//                {
+//                    $value = nl2br(html_entity_decode($_POST[$field]));
+//                    if ($field == 'time')
+//                    {
+//                        $time = explode('-', trim(strtolower($value)));
+//                        $selected_hour1 = $selected_hour2 = '-';
+//                        /*if (!isset($time[0]) || $time[0] === '')
+//                            $time[0] = '';
+//                        if (!isset($time[1]) || $time[1] === '')
+//                            $time[1] = '';*/
+//                        if (isset($time[0]) && $time[0] !== '')
+//                            $selected_hour1 = $time[0];
+//                        if (isset($time[1]) && $time[1] !== '')
+//                            $selected_hour2 = $time[1];
+//                        $value = sprintf($this->data['text_email_hours_range'], $selected_hour1, $selected_hour2);
+//                        
+//                    }
+//                    $label = html_entity_decode($this->model_spcallmeback_form->getFieldName('name_'.$field));
+//                    $body .= "<b>$label</b>: ".$value."<br />";
+//                }
+//            }
+//            $body .= "<br /><br /><br />";
+//            $res2 = $this->sendHtmlMessage($our_email, $subject, $body, $from, $our_email);
+//
+//            if ($res1 && $res2)
+//              echo $this->data['text_email_delivery_success'];
+//            else
+//              echo $this->data['text_email_delivery_failure'];
+//            die('</div>');
         }
         
         echo('            <h4>'.$form_caption.'</h4>
             <div>'.$form_subcaption.'</div>
             <br />');
-        die(html_entity_decode($form));
 	}
     
     function sendHtmlMessage($email, $subject, $body, $fromName, $fromEmail) {
@@ -292,71 +271,6 @@ class ControllerSpcallmebackAjax extends Controller {
             return str_replace($a['win'], $a['utf'], $s);
     }
     
-    public function pushPhone($data) {
-        
-        
-        
-        $data = array_merge($this->info,$data);
-        
-        $data["text"] = "📞Клієнт запитує дзвінок?😱👇"
-                . "\n"
-                . "І'мя: {$data["name"]}"
-                . "\n"
-                . "телефон: {$data["tel"]}"
-                . "\n";
-        
-        $data["text"] = urlencode($data["text"]);
-        
-        $data["text"] .= "[".$data["spcallmeback-title"]."](".urlencode($data["spcallmeback-url"]).")";
-        
-        if($data["ip_countryName"] == "Ukraine"){
-            $data["ip_countryName"] .= "🇺🇦";
-        }
-                
-        $info = "\n"
-                . "Додаткова інформація визначається по IP(можливі неточності)"
-                . "\n"
-                . "Країна: {$data["ip_countryName"]}"
-                . "\n"
-                . "Регіон: {$data["ip_regionName"]}"
-                . "\n"
-                . "Місто: {$data["ip_city"]}"
-                . "\n";
-                
-        $info = urlencode($info);
-        
-        $data["text"] .= $info;
-        
-        return $this->push($data);
-        
-    }
-    
-    public function push($data) {
-        try {
-            foreach ($this->chat_ids as $chat_id) {
-            
-                file_get_contents("https://api.telegram.org/bot{$this->token}/sendMessage?chat_id={$chat_id}&parse_mode=Markdown&text=".($data["text"]));            
-            }
-            return "ok";
-        } catch (Exception $exc) {
-            return "error";
-        }
-    }
-    
-    public function getInfo_IP() {
-    
-        $ip = "";
-        $client  = @$_SERVER['HTTP_CLIENT_IP'];
-        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-        $remote  = @$_SERVER['REMOTE_ADDR'];
-
-        if(filter_var($client, FILTER_VALIDATE_IP)) $ip = $client;
-        elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
-        else $ip = $remote;
-        
-        return @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-        
-    }
     
 }
 ?>

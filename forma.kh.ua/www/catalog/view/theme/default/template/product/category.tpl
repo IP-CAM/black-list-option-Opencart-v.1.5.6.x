@@ -125,8 +125,7 @@
       <?php if ($product['options']) { ?>
           <?php foreach ($product['options'] as $option) { ?>
           <?php if ($option['type'] == 'select') { ?>
-            <div class="category-product-option category-product-option-<?php echo $option['product_option_id']; ?>" onclick="recalculateoneprice('<?php echo $product['product_id']; ?>');<?php if ($product['images_option'] && $product['images_option']=="option[".$option['product_option_id']."]" && is_array($product['thumb'])) { ?>
-              updateImages('option[<?php echo $option['product_option_id']; ?>]'); <?php } ?>">
+            <div class="category-product-option category-product-option-<?php echo $option['product_option_id']; ?>">
               <span class="title"><?php echo $option['name']; ?>:</span>
               <?php $option_checked = "checked"; ?>
 
@@ -213,11 +212,11 @@
         </div>
       <?php } ?>
       <?php if ($product['price']) { ?>
-      <div class="price">
+      <div class="price"  data-price="<?php echo $product['priceSourse']; ?>" data-currency="<? echo $currency['symbol_right'];?>" data-pc="<? echo $text_pc ?>">
         <?php if (!$product['special']) { ?>
         <span id="formated_price_<?php echo $product['product_id']; ?>" price="<?php echo $product['price_value']; ?>" sku="/<?php echo $product['sku']; ?>"><?php echo $product['price']; ?>/<?php echo $product['sku']; ?>
-          <span class="alt_t">*<span class="alt"><?php echo $currency_alt; ?></span></span>
-        </span>
+          
+        </span><span class="alt_t">*<span class="alt"><?php echo $currency_alt; ?></span></span>
         <?php } else { ?>
         <span class="price-old"><?php echo $product['price']; ?></span> <span class="price-new"><?php echo $product['special']; ?>/<?php echo $product['sku']; ?></span>
         <?php } ?>
@@ -235,10 +234,10 @@
               <div class="quant-wrap">
               <span class="quant-text"><?php echo $text_quantity; ?></span>
               <!-- cartProdackt-->
-              <span class="minus-q" style="float:left;" onclick="btnminus('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"></span>
+              <span class="minus-q" style="float:left;"></span>
               <input type="text" name="quantity" size="2" style="width: 42px;
 height: 38px;margin: 0 0px 0px 0px;" min="<?php echo $product['minimum']; ?>" value="<?php echo $product['minimum']; ?>" id="quantity_<?php echo $product['product_id']; ?>" oninput="verifyQuantity('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>', true);"/>
-              <span class="plus-q" style="margin-bottom: 0px;" onclick="btnplus('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"></span>
+              <span class="plus-q" style="margin-bottom: 0px;"></span>
               </div>  <span class="unit" style="margin-right: 0px;"><?php if ($this->config->get('config_display_sku') && $product['sku']) { ?><?php echo $product['sku']; ?><?php } ?></span>
               <input type="hidden" name="product_id" size="2" value="<?php echo $product['product_id']; ?>" />
               <div id="buycart" style=" float: right; "><input type="button" value="<?php echo $button_cart; ?>"
@@ -270,116 +269,9 @@ height: 38px;margin: 0 0px 0px 0px;" min="<?php echo $product['minimum']; ?>" va
 	  <?php echo $content_bottom; ?></div>
 
 <script type="text/javascript"><!--
-
-function btnplus(id, min) {
-    $('#quantity_' + id).val(function(i, oldval){
-        return ++oldval;
-    });
-    verifyQuantity(id, min);
-}
-
-function btnminus(id, min) {
-    if (parseInt($('#quantity_' + id).val()) > parseInt(min)) {
-        $('#quantity_' + id).val(function(i, oldval){
-            return --oldval;
-        });
-        verifyQuantity(id, min, true);
-    } else {
-        verifyQuantity(id, min);
-    }
-    return false;
-}
-
-function verifyQuantity (id, min, isIn) {
-  if (parseInt($('#quantity_' + id).val()) <= parseInt(min)) {
-    if (isIn && parseInt($('#quantity_' + id).val()) >= parseInt(min)) {
-      $('#product_'+id).find('.msg').css('display', 'none');
-      $('#product_'+id).find('.cart input.button').attr('disabled', false);
-      recalculateprice(id);
-    } else {
-      $('#product_'+id).find('.msg').css('display', 'block');
-      $('#product_'+id).find('.cart input.button').attr('disabled', true);
-    }
-  } else {
-    $('#product_'+id).find('.msg').css('display', 'none');
-    $('#product_'+id).find('.cart input.button').attr('disabled', false);
-    recalculateprice(id);
-  }
-}
-    function openMore(el){
-        var proAttr = $(el).parent().find('.products_attrs');
-        var vm = 'visible-mobile';
-        if (proAttr.hasClass(vm)){
-            $(el).text('Показать атрибуты');
-            $(proAttr).removeClass(vm);
-        } else {
-            $(el).text('Скрыть');
-            $(proAttr).addClass(vm);
-        }
-    }
-
-
-function price_format(n)
-{
-    c = <?php echo (empty($currency['decimals']) ? "0" : $currency['decimals'] ); ?>;
-    d = '<?php echo $currency['decimal_point']; ?>'; // decimal separator
-    t = '<?php echo $currency['thousand_point']; ?>'; // thousands separator
-    s_left = '<?php echo $currency['symbol_left']; ?>';
-    s_right = '<?php echo $currency['symbol_right']; ?>';
-    n = n * <?php echo $currency['value']; ?>;
-    //sign = (n < 0) ? '-' : '';
-    //extracting the absolute value of the integer part of the number and converting to string
-    i = parseInt(n = Math.abs(n).toFixed(c)) + '';
-    j = ((j = i.length) > 3) ? j % 3 : 0;
-    return s_left + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '') + s_right;
-}
-function recalculateprice(id)
-{
-	console.log(1);
-    var main_price = Number($('#formated_price_' + id).attr('price'));
-
-    //console.log(main_price);
-    var input_quantity = Number($('#quantity_' + id).attr('value'));
-
-    $('#product_' + id + ' input:checked').each(function (e) {
-      main_price += eval($(this).attr('price-prefix') + Number($(this).attr('price')));
-    });
-
-    $('#product_' + id + ' select option:selected').each(function (e) {
-      main_price += eval($(this).attr('price-prefix') + Number($(this).attr('price')));
-    });
-
-    main_price *= input_quantity;
-
-
-
-    $('#formated_price_' + id).html( price_format(main_price) );
-}
-
-function recalculateoneprice(id)
-{
-    if ($('#formated_price_' + id).html().indexOf($('#formated_price_' + id).attr('sku')) + 1)
-	{
-      var main_price = Number($('#formated_price_' + id).attr('price'));
-      $('#product_' + id + ' input:checked').each(function (e) {
-        main_price += eval($(this).attr('price-prefix') + Number($(this).attr('price')));
-      });
-
-      $('#product_' + id + ' select option:selected').each(function (e) {
-        main_price += eval($(this).attr('price-prefix') + Number($(this).attr('price')));
-      });
-
-      $('#formated_price_' + id).html( price_format(main_price) + $('#formated_price_' + id).attr('sku'));
-    }
-	else {
-      recalculateprice(id);
-      recalculateprice2(id);
-    }
-}
-
 function display(view) {
     screen_width=$(document).width();
-
+    
 	if (view == 'list' && screen_width>992 ) {
 
 		$('.product-grid').attr('class', 'product-list');
@@ -392,10 +284,13 @@ function display(view) {
 			}
 			html += '  <div class="name">' + $(element).find('.name').html() + '</div>';
 			html += '  <div class="description" style="display:none;">' + $(element).find('.description').html() + '</div>';
-      var price = $(element).find('.price').html();
-      if (price != null) {
-        html += '<div class="price">' + price  + '</div>';
-      }
+            var priceEl = $(element).find('.price');
+            
+			var price = priceEl.html();
+            
+			if (price != null) {
+				html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
+			}
 
       var rating = $(element).find('.rating').html();
       if (rating != null) {
@@ -459,10 +354,13 @@ function display(view) {
             }
             html += '<div class="name">' + $(element).find('.name').html() + '</div>';
             html += '<div class="description">' + $(element).find('.description').html() + '</div>';
-            var price = $(element).find('.price').html();
-            if (price != null) {
-               html += '<div class="price">' + price  + '</div>';
-            }
+            var priceEl = $(element).find('.price');
+            
+			var price = priceEl.html();
+            
+			if (price != null) {
+				html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
+			}
 
             //flag price js
             //html += '<div style="clear: both;"></div>'
@@ -569,3 +467,6 @@ function hover_product_out(item){
 
 
 <?php echo $footer; ?>
+<script type="text/javascript">
+ $(document).ready(function(){productparam_refreshEvent();});
+</script>

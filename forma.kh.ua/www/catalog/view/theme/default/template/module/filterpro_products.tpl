@@ -43,8 +43,7 @@
         <?php if ($product['options']) { ?>
             <?php foreach ($product['options'] as $option) { ?>
             <?php if ($option['type'] == 'select') { ?>
-              <div class="category-product-option" onclick="recalculateoneprice('<?php echo $product['product_id']; ?>');<?php if ($product['images_option'] && $product['images_option']=="option[".$option['product_option_id']."]" && is_array($product['thumb'])) { ?>
-                updateImages('option[<?php echo $option['product_option_id']; ?>]'); <?php } ?>">
+              <div class="category-product-option">
                 <span class="title"><?php echo $option['name']; ?>:</span>
                 <?php $option_checked = "checked"; ?>
 
@@ -93,9 +92,9 @@
 		  </span>
         <?php } ?>
         <?php if ($product['price']) { ?>
-        <div class="price">
+        <div class="price" data-price="<?php echo $product['priceSourse']; ?>" data-currency="<? echo $currency['symbol_right'];?>" data-pc="<? echo $text_pc ?>">
             <?php if (!$product['special']) { ?>
-            <span id="formated_price_<?php echo $product['product_id']; ?>" price="<?php echo $product['price_value']; ?>" sku="/<?php echo $product['sku']; ?>"><?php echo $product['price']; ?>/<?php echo $product['sku']; ?>
+            <span id="formated_price_<?php echo $product['product_id']; ?>" price="<?php echo $product['price_value']; ?>" sku="1/<?php echo $product['sku']; ?>"><?php echo $product['price']; ?>/<?php echo $product['sku']; ?>
               <span class="alt_t">*<span class="alt"><?php echo $currency_alt; ?></span></span>
             </span>
             <?php } else { ?>
@@ -140,10 +139,10 @@
                 <div class="quant-wrap">
 
 <!--1searh-->
-              <span class="minus-q" style="float:left;" onclick="btnminus('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"></span>
+              <span class="minus-q" style="float:left;"></span>
               <input type="text" style="width: 42px;
 height: 38px;margin: 0 0px 0px 0px;" name="quantity" size="2" min="<?php echo $product['minimum']; ?>" value="<?php echo $product['minimum']; ?>" id="quantity_<?php echo $product['product_id']; ?>" oninput="verifyQuantity('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>', true);"/>
-                    <span class="plus-q" style="float:left;" onclick="btnplus('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"></span>
+                    <span class="plus-q" style="float:left;"></span>
 					<div class="wishlist"></div>
 					<div class="compare"></div>
                 </div>  <span class="unit"><?php if ($this->config->get('config_display_sku') && $product['sku']) { ?><?php echo $product['sku']; ?><?php } ?></span>
@@ -157,3 +156,4 @@ height: 38px;margin: 0 0px 0px 0px;" name="quantity" size="2" min="<?php echo $p
 
     </div>
     <?php } ?>
+<script type="text/javascript">productparam_refreshEvent();</script>

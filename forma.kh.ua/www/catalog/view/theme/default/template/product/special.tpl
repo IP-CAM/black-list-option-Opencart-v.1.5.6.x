@@ -88,10 +88,12 @@ function display(view) {
 				html += '<div class="image">' + image + '</div>';
 			}
 			
-			var price = $(element).find('.price').html();
-			
+			var priceEl = $(element).find('.price');
+            
+			var price = priceEl.html();
+            
 			if (price != null) {
-				html += '<div class="price">' + price  + '</div>';
+				html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
 			}
 					
 			html += '  <div class="name">' + $(element).find('.name').html() + '</div>';
@@ -127,10 +129,12 @@ function display(view) {
 			html += '<div class="name">' + $(element).find('.name').html() + '</div>';
 			html += '<div class="description">' + $(element).find('.description').html() + '</div>';
 			
-			var price = $(element).find('.price').html();
-			
+			var priceEl = $(element).find('.price');
+            
+			var price = priceEl.html();
+            
 			if (price != null) {
-				html += '<div class="price">' + price  + '</div>';
+				html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
 			}
 						
 			var rating = $(element).find('.rating').html();

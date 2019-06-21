@@ -174,18 +174,21 @@
 		  </span>
           <?php } ?>
           <?php if ($product['price']) { ?>
-          <div class="price">
-              <?php if (!$product['special']) { ?>
-              <span id="formated_price_<?php echo $product['product_id']; ?>" price="<?php echo $product['price_value']; ?>"><?php echo $product['price']; ?>/<?php echo $product['sku']; ?></span>
-              <?php } else { ?>
-              <span class="price-old"><?php echo $product['price']; ?></span> <span class="price-new"><?php echo $product['special']; ?>/<?php echo $product['sku']; ?></span>
-              <?php } ?>
-              <?php if ($product['tax']) { ?>
-              <br />
-              <span class="price-tax"><?php echo $text_tax; ?> <?php echo $product['tax']; ?></span>
-              <?php } ?>
-          </div>
-          <?php } ?>
+      <div class="price"  data-price="<?php echo $product['priceSourse']; ?>" data-currency="<? echo $currency['symbol_right'];?>" data-pc="<? echo $text_pc ?>">
+        <?php if (!$product['special']) { ?>
+        <span id="formated_price_<?php echo $product['product_id']; ?>" price="<?php echo $product['price_value']; ?>" sku="/<?php echo $product['sku']; ?>"><?php echo $product['price']; ?>/<?php echo $product['sku']; ?>
+          
+        </span><span class="alt_t">*<span class="alt"><?php echo $currency_alt; ?></span></span>
+        <?php } else { ?>
+        <span class="price-old"><?php echo $product['price']; ?></span> <span class="price-new"><?php echo $product['special']; ?>/<?php echo $product['sku']; ?></span>
+        <?php } ?>
+        <?php if ($product['tax']) { ?>
+        <br />
+        <span class="price-tax"><?php echo $text_tax; ?> <?php echo $product['tax']; ?></span>
+        <?php } ?>
+        <span class="msg"><?php echo $text_min_quant; ?> <?php echo $product['minimum']; ?><?php echo $product['sku']; ?></span>
+	     </div>
+      <?php } ?>
           <?php if ($product['rating']) { ?>
           <div class="rating"><img src="catalog/view/theme/default/image/stars-<?php echo $product['rating']; ?>.png" alt="<?php echo $product['reviews']; ?>" /></div>
           <?php } ?>
@@ -325,11 +328,13 @@ function display(view) {
       html += '  <div class="name">' + $(element).find('.name').html() + '</div>';
       html += '  <div class="description" style="display:none;">' + $(element).find('.description').html() + '</div>';
 
-      var price = $(element).find('.price').html();
+      var priceEl = $(element).find('.price');
+            
+        var price = priceEl.html();
 
-      if (price != null) {
-        html += '<div class="price">' + price  + '</div>';
-      }
+        if (price != null) {
+            html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
+        }
 
       var rating = $(element).find('.rating').html();
 
@@ -399,11 +404,13 @@ function display(view) {
 
 
 
-      var price = $(element).find('.price').html();
-
-      if (price != null) {
-        html += '<div class="price">' + price  + '</div>';
-      }
+      var priceEl = $(element).find('.price');
+            
+			var price = priceEl.html();
+            
+			if (price != null) {
+				html += '<div class="price" data-price="'+priceEl.attr('data-price')+'" data-currency="'+priceEl.attr('data-currency')+'" data-pc="'+priceEl.attr('data-pc')+'">' + price + '</div>';
+			}
 
       //html += '<div style="clear: both;"></div>'
 

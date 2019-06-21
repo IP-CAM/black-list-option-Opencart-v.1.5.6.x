@@ -156,17 +156,16 @@ $(document).ready(function(){
 		$("select[class=op_proid]").on("change", function() {
 			var conti = $(this).find('option:selected').first().attr('price');
 			conti = conti.replace(" ", "");
-			if(conti == '' || conti == '0.0000')
-			{
+			if(conti == '' || conti == '0.0000'){
 				conti = $('#onepricee2').attr('price');
 				var conti2 = $('#onepricee2').attr('price');
-			}	
-			else{
+			}else{
 				if($(this).find('option:selected').first().attr('price-prefix') == '-')
 					var conti2 = parseFloat($("#onepricee2").attr("price")) - parseFloat(conti);
 				if($(this).find('option:selected').first().attr('price-prefix') == '+')
 					var conti2 = parseFloat($("#onepricee2").attr("price")) + parseFloat(conti);
 			}
+            
 			var quantity = $("#quantity").attr("min");
 			$("#quantity").attr("value", quantity);
 			if(conti == $("#onepricee2").attr("price"))
@@ -178,7 +177,7 @@ $(document).ready(function(){
 				if($(this).find('option:selected').first().attr('price-prefix') == '+')
 					var resultpri = (parseFloat($("#onepricee2").attr("price")) + parseFloat(conti)) * parseFloat(quantity).toFixed(2);		
 			}
-				
+			
 			$("#price_container").html(parseFloat(resultpri).toFixed(2));
 			
 			$('#onepricee2').empty();

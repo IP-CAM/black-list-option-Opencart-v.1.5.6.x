@@ -1,6 +1,6 @@
 <?php
 class Language {
-	private $default = 'russian';
+	private $default = 'english';
 	private $directory;
 	private $data = array();
  

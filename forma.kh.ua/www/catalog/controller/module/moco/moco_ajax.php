@@ -51,11 +51,9 @@ class ControllerModuleMocoMocoAjax extends Controller {
     }
     
     public function index() {}
-
+    
     
     public function push_phone() {
-        
-        $this->load->language('module/moco/moco_ajax');
         
         $data = $this->data;
         
@@ -80,23 +78,36 @@ class ControllerModuleMocoMocoAjax extends Controller {
             die;
         }
         
-        $data['text'] = '';
-        $this->getChild('checkout/simplecheckout_cart/update');
-        $statys = $this->load->controller('extension/module/moco/ms/telegram/push_phone', $data);
-        
-        if ($statys) {
-            $json['success'] = $this->language->get('text_push_phone_mess_ok');
+        if (isset($this->request->post['name'])) {
+            $data["name"] = $this->request->post['name'];
         }else{
-            $json['success'] = $this->language->get('text_push_phone_mess_erorr');
+            $data["name"] = "👽";
         }
         
-        $this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+        $text = "📞Клієнт запитує консультацію!!! 😱👇"
+                . "\n\n"
+                . "ім'я: {$data["name"]}\n"
+                . "телефон: {$data["telephone"]}"
+                . "\n\n";
+                
+        $text .= "[".$data["title"]."](".$data["url"].")";
         
-    }
-    
-    public function push_One_Click($data) {
-        $this->load->controller('extension/module/moco/ms/telegram/push_One_Click', array_merge($this->data,$data));
+        if($this->dataIP["ip_countryName"] == "Ukraine") $this->dataIP["ip_countryName"] .= "🇺🇦";
+                
+        $text .= "\n\n"
+                . "Додаткова інформація визначається по IP(можливі неточності)"
+                . "\n"
+                . "Країна: {$this->dataIP["ip_countryName"]}"
+                . "\n"
+                . "Регіон: {$this->dataIP["ip_regionName"]}"
+                . "\n"
+                . "Місто: {$this->dataIP["ip_city"]}"
+                . "\n";
+
+        $status = $this->getChild('module/moco/ms/telegram/push', $text);
+        
+        return $status;
+        
     }
     
     public function push_review($data) {
@@ -170,14 +181,17 @@ class ControllerModuleMocoMocoAjax extends Controller {
     }
     
     public function getInfo_IP() {
-    
         $ip = "";
-        $client  = @$_SERVER['HTTP_CLIENT_IP'];
-        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+        if($_SERVER['REMOTE_ADDR']){
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }else{
+            $client  = @$_SERVER['HTTP_CLIENT_IP'];
+            $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
 
-        if(filter_var($client, FILTER_VALIDATE_IP)) $ip = $client;
-        elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
-        else $ip = @$_SERVER['REMOTE_ADDR'];
+            if(filter_var($client, FILTER_VALIDATE_IP)) $ip = $client;
+            elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
+            else $ip = @$_SERVER['REMOTE_ADDR'];
+        }
         
         return $this->getInfo_IP_A1($ip);
         

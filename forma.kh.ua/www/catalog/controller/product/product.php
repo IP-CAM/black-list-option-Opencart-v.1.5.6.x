@@ -161,26 +161,17 @@ class ControllerProductProduct extends Controller {
 			$this->data['text_option'] = $this->language->get('text_option');
 			$this->data['text_qty'] = $this->language->get('text_qty');
 			$this->data['text_minimum'] = sprintf($this->language->get('text_minimum'), $product_info['minimum']);
+            
+            $this->data['priceSourse'] = $this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax'));		
 			
-			//Цена на сайте в продукте
+            
 			if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
-				$this->data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')));
+				$this->data['price'] = $this->currency->format($this->data['priceSourse']);
 			} else {
 				$this->data['price'] = false;
 			}
-			
-			//Правки
-			$this->data['minmin2'] = $product_info['minimum'];
-			
-			$price_thing = sprintf("%01.2f", $this->data['price']);
-			$this->data['priceS2'] = $price_thing;
-			
-			//$currency2 = preg_replace('/[^0-9]/', '', $this->data['price']);
-			$this->data['currency2'] = preg_replace('/[0-9\.]+/', '', $this->data['price']);
-			
-			$price_min = sprintf("%01.2f", $price_thing * $product_info['minimum']);
-			$this->data['priceS'] = $price_min;
-			//Конец
+            
+            $this->data['minmin2'] = $product_info['minimum'];          
 			
 			$this->data['text_or'] = $this->language->get('text_or');
 			$this->data['text_write'] = $this->language->get('text_write');

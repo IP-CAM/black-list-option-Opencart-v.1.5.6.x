@@ -268,13 +268,14 @@ class ControllerProductSearch extends Controller {
 						$image = false;
 					}
 					}
-
+                    $priceSourse = $this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax'));
 					if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
-						$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')));
+						$price = $this->currency->format($priceSourse);
 					} else {
 						$price = false;
 					}
-
+                    
+                    
 					if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
 						$price_value = $this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax'));
 					} else {
@@ -322,6 +323,7 @@ class ControllerProductSearch extends Controller {
 						'options'	  => $this->model_catalog_product->getProductOptions($result['product_id']),
 						'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0,160) . '..',
 						'price'       => $price,
+                        'priceSourse' => $priceSourse,
 						'price_value'       => $price_value,
 						'special'     => $special,
 						'tax'         => $tax,
