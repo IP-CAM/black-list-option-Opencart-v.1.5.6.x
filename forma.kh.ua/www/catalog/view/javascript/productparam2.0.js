@@ -3,7 +3,7 @@ function productparam_refreshPrice(el){
 
     var sum = parseFloat(priceEl.attr('data-price'));
 
-    el.find('.options div').each(function(){  
+    el.find('.category-product-option').each(function(){  
 
         var conti = $(this).attr('price');   
 
@@ -27,11 +27,10 @@ function productparam_refreshPrice(el){
 
 }
 
-function productparam_setOptionDivPrice(_box,price){
-    var box = $(_box).parent().parent();
+function productparam_setOptionDivPrice(box,price,prefix){
     price = (price)?price:"0";
-    box.attr('price',$(_box).attr('price-prefix')+price);
-    productparam_refreshPrice(box.parent().parent().parent());
+    box.attr('price',prefix+price);
+    productparam_refreshPrice(box.parent().parent());
 }
 
 function productparam_refreshEvent(){
@@ -46,11 +45,23 @@ function productparam_refreshEvent(){
     
     
     $(".category-product-option input[type=radio]").on("click", function(){
-        productparam_setOptionDivPrice(this, $(this).attr('price'));        
+        var el = $(this);
+        var box = el.parent().parent();  
+        productparam_setOptionDivPrice(
+                box, 
+                el.attr('price'),
+                el.attr('price-prefix')
+        );        
     }); 
     
-    $(".category-product-option select[class=op_proid]").on("change", function() {
-        productparam_setOptionDivPrice(this, $(this).find('option:selected').first().attr('price'));     
+    $(".category-product-option select.op_proid").on("change", function() {
+        var el = $(this);
+        var box = el.parent();        
+        productparam_setOptionDivPrice(
+                box, 
+                el.find('option:selected').first().attr('price'),
+                el.find('option:selected').first().attr('price-prefix')
+        );     
     });
     
     $(".plus-q").click(function() {        
@@ -68,4 +79,13 @@ function productparam_refreshEvent(){
             productparam_refreshPrice(quantity.parent().parent().parent().parent().parent());
         }
     });
+    $('input[name="quantity"]').change(function() {
+        var quantity = $(this).parent().find('input[name="quantity"]');
+        if(quantity.attr('min')<quantity.val()){
+            var quantityV = quantity.val()*1;
+            quantity.val(quantityV);
+            productparam_refreshPrice(quantity.parent().parent().parent().parent().parent());
+        }
+    });
+    
 }
